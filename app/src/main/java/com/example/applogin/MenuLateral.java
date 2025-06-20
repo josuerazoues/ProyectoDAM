@@ -13,6 +13,7 @@ import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
+import com.example.applogin.CitaTaller.CitasTaller;
 import com.example.applogin.base_DAO.AppDatabase;
 import com.example.applogin.base_DAO.Usuario;
 import com.google.android.material.navigation.NavigationView;
@@ -56,6 +57,7 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
         int id = item.getItemId();
 
         if (id == R.id.nav_home) {
+            // Ya estamos en home
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -74,7 +76,7 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
 
                 if (usuario != null) {
                     runOnUiThread(() -> {
-                        if (usuario.getId_rol() == 1) { // 1 = Administrador
+                        if (usuario.getId_rol() == 1) {
                             Intent intent = new Intent(this, UserManagementActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
@@ -85,18 +87,24 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
                     });
                 }
             }).start();
+        } else if (id == R.id.citas) {
+            Intent intent = new Intent(this, CitasTaller.class);
+            intent.putExtra("ID_USUARIO", userId); // opcional
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish();
         } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            finish();
-        } else if (id == R.id.nav_toggle_theme) {
+            finish(); // Cierra la sesión actual
+        }else if (id == R.id.nav_toggle_theme) {
             int nightMode = AppCompatDelegate.getDefaultNightMode();
-            if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
-            } else {
-                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
-            }
+            AppCompatDelegate.setDefaultNightMode(
+                    nightMode == AppCompatDelegate.MODE_NIGHT_YES ?
+                            AppCompatDelegate.MODE_NIGHT_NO :
+                            AppCompatDelegate.MODE_NIGHT_YES
+            );
             recreate();
         } else if (id == R.id.registro_vehiculo) {
 
@@ -109,5 +117,4 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
         drawer.closeDrawer(GravityCompat.START);
         return true;
     }
-
 }
