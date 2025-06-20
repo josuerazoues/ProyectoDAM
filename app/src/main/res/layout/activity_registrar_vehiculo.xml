@@ -1,0 +1,230 @@
+<?xml version="1.0" encoding="utf-8"?>
+<androidx.drawerlayout.widget.DrawerLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
+    android:id="@+id/drawer_layout"
+    android:layout_width="match_parent"
+    android:layout_height="match_parent">
+
+    <!-- Contenido principal -->
+    <LinearLayout
+        android:layout_width="match_parent"
+        android:layout_height="match_parent"
+        android:orientation="vertical">
+
+        <!-- Toolbar -->
+        <com.google.android.material.appbar.MaterialToolbar
+            android:id="@+id/toolbar"
+            android:layout_width="match_parent"
+            android:layout_height="?attr/actionBarSize"
+            android:background="?attr/colorPrimary"
+            android:title="Registrar Vehículo"
+            android:titleTextColor="@android:color/white"
+            app:navigationIcon="@drawable/ic_menu" />
+
+        <!-- ScrollView para que el formulario no se corte -->
+        <androidx.core.widget.NestedScrollView
+            android:layout_width="match_parent"
+            android:layout_height="0dp"
+            android:layout_weight="1"
+            android:fillViewport="true">
+
+            <androidx.cardview.widget.CardView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:layout_margin="16dp"
+                app:cardCornerRadius="12dp"
+                app:cardElevation="6dp"
+                android:background="@android:color/white">
+
+                <androidx.constraintlayout.widget.ConstraintLayout
+                    android:layout_width="match_parent"
+                    android:layout_height="wrap_content"
+                    android:padding="20dp">
+
+                    <!-- Tipo de Vehículo -->
+                    <TextView
+                        android:id="@+id/tvTipo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Tipo de vehículo"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121"
+                        app:layout_constraintTop_toTopOf="parent"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent" />
+
+                    <Spinner
+                        android:id="@+id/spinnerTipo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner_background"
+                        android:padding="8dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvTipo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="8dp" />
+
+                    <View
+                        android:id="@+id/separador1"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"
+                        app:layout_constraintTop_toBottomOf="@id/spinnerTipo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp" />
+
+                    <!-- Marca -->
+                    <TextView
+                        android:id="@+id/tvMarca"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Marca"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121"
+                        app:layout_constraintTop_toBottomOf="@id/separador1"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerMarca"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner_background"
+                        android:padding="8dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvMarca"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="8dp" />
+
+                    <View
+                        android:id="@+id/separador2"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"
+                        app:layout_constraintTop_toBottomOf="@id/spinnerMarca"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp" />
+
+                    <!-- Modelo -->
+                    <TextView
+                        android:id="@+id/tvModelo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Modelo"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121"
+                        app:layout_constraintTop_toBottomOf="@id/separador2"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp" />
+
+                    <Spinner
+                        android:id="@+id/spinnerModelo"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/spinner_background"
+                        android:padding="8dp"
+                        app:layout_constraintTop_toBottomOf="@id/tvModelo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="8dp" />
+
+                    <View
+                        android:id="@+id/separador3"
+                        android:layout_width="0dp"
+                        android:layout_height="1dp"
+                        android:background="#E0E0E0"
+                        app:layout_constraintTop_toBottomOf="@id/spinnerModelo"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp" />
+
+                    <!-- Año -->
+                    <TextView
+                        android:id="@+id/tvAnio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Año"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121"
+                        app:layout_constraintTop_toBottomOf="@id/separador3"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp" />
+
+                    <EditText
+                        android:id="@+id/editTextAnio"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:hint="Ej: 2020"
+                        android:inputType="number"
+                        app:layout_constraintTop_toBottomOf="@id/tvAnio"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="8dp" />
+
+                    <!-- Color -->
+                    <TextView
+                        android:id="@+id/tvColor"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Color"
+                        android:textSize="18sp"
+                        android:textStyle="bold"
+                        android:textColor="#212121"
+                        app:layout_constraintTop_toBottomOf="@id/editTextAnio"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="16dp" />
+
+                    <EditText
+                        android:id="@+id/editTextColor"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:background="@drawable/edittext_background"
+                        android:padding="12dp"
+                        android:hint="Ej: Rojo"
+                        app:layout_constraintTop_toBottomOf="@id/tvColor"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        android:layout_marginTop="8dp" />
+
+                    <!-- Botón Guardar -->
+                    <com.google.android.material.button.MaterialButton
+                        android:id="@+id/btnGuardar"
+                        android:layout_width="0dp"
+                        android:layout_height="wrap_content"
+                        android:text="Guardar"
+                        android:textAllCaps="false"
+                        android:layout_marginTop="24dp"
+                        app:layout_constraintTop_toBottomOf="@id/editTextColor"
+                        app:layout_constraintStart_toStartOf="parent"
+                        app:layout_constraintEnd_toEndOf="parent"
+                        app:cornerRadius="8dp"
+                        app:backgroundTint="@color/purple_500"
+                        android:textColor="@android:color/white"/>
+                </androidx.constraintlayout.widget.ConstraintLayout>
+            </androidx.cardview.widget.CardView>
+        </androidx.core.widget.NestedScrollView>
+    </LinearLayout>
+
+    <!-- Navigation Drawer -->
+    <com.google.android.material.navigation.NavigationView
+        android:id="@+id/navigation_view"
+        android:layout_width="280dp"
+        android:layout_height="match_parent"
+        android:layout_gravity="start"
+        app:menu="@menu/activity_home_drawer"
+        app:headerLayout="@layout/drawer_header" />
+
+</androidx.drawerlayout.widget.DrawerLayout>

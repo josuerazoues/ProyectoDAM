@@ -2,34 +2,15 @@
 <menu xmlns:android="http://schemas.android.com/apk/res/android">
 
     <group android:checkableBehavior="single">
-        <item
-            android:id="@+id/nav_perfil"
-            android:title="Perfil" />
-
-        <item
-            android:id="@+id/nav_user_management"
-            android:title="Gestión de Usuarios" />
-
-        <item
-            android:id="@+id/registro_vehiculo"
-            android:title="Registros de vehículos" />
-
-        <item
-            android:id="@+id/citas"
-            android:title="Citas" />
-
-        <item
-            android:id="@+id/Historial"
-            android:title="Historial" />
+        <item android:id="@+id/nav_perfil" android:title="Perfil" />
+        <item android:id="@+id/nav_user_management" android:title="Gestión de Usuarios" />
+        <item android:id="@+id/registro_vehiculo" android:title="Registros de vehículos" />
+        <item android:id="@+id/citas" android:title="Citas" />
+        <item android:id="@+id/Historial" android:title="Historial" />
     </group>
 
-    <!-- ✅ Estos ya son botones independientes -->
-    <item
-        android:id="@+id/nav_toggle_theme"
-        android:title="Cambiar tema"/>
-
-    <item
-        android:id="@+id/nav_logout"
+    <item android:id="@+id/nav_toggle_theme" android:title="Cambiar tema" />
+    <item android:id="@+id/nav_logout"
         android:title="Cerrar sesión"
         android:icon="@android:drawable/ic_lock_power_off" />
 </menu>

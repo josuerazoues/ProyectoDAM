@@ -1,0 +1,32 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+    <string-array name="tipos_vehiculo">
+        <item>Automóvil</item>
+        <item>Motocicleta</item>
+        <item>Camión</item>
+    </string-array>
+
+    <string-array name="marcas_vehiculo">
+        <item>Toyota</item>
+        <item>Nissan</item>
+        <item>Ford</item>
+    </string-array>
+
+    <string-array name="modelos_marca_1">
+        <item>Corolla</item>
+        <item>Camry</item>
+        <item>Hilux</item>
+    </string-array>
+
+    <string-array name="modelos_marca_2">
+        <item>Sentra</item>
+        <item>Altima</item>
+        <item>Juke</item>
+    </string-array>
+
+    <string-array name="modelos_marca_3">
+        <item>Escape</item>
+        <item>Bronco</item>
+        <item>Ranger</item>
+    </string-array>
+</resources>
