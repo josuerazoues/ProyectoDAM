@@ -3,12 +3,13 @@ package com.example.applogin;
 import android.content.Intent;
 import android.content.SharedPreferences;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.lifecycle.ViewModelProvider;
-import android.util.Log;
 
 import com.example.applogin.base_DAO.AppDatabase;
 import com.example.applogin.base_DAO.Rol;
@@ -27,28 +28,26 @@ public class MainActivity extends AppCompatActivity {
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+
         initViews();
         initViewModel();
         setupClickListeners();
         setupObservers();
-
-        // Agregar usuario por defecto
         insertarUsuarioPorDefecto();
     }
 
     private void insertarUsuarioPorDefecto() {
         Executors.newSingleThreadExecutor().execute(() -> {
             AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-            Usuario existente = db.usuarioDao().buscarPorNombre("admin");
 
-
-            // Insertar roles primero si no existen
             if (db.rolDao().contarRoles() == 0) {
                 db.rolDao().insertar(new Rol(1, "Administrador"));
                 db.rolDao().insertar(new Rol(2, "Mecanico"));
                 db.rolDao().insertar(new Rol(3, "Usuario"));
+                Log.d("DB_INIT", "Roles iniciales insertados.");
             }
 
+            Usuario existente = db.usuarioDao().buscarPorNombre("admin");
             if (existente == null) {
                 Usuario admin = new Usuario();
                 admin.setNombre("admin");
@@ -90,16 +89,14 @@ public class MainActivity extends AppCompatActivity {
         loginViewModel.getUsuarioResult().observe(this, usuario -> {
             if (usuario != null) {
                 handleSuccessfulLogin(usuario);
-            } else {
-                if (loginViewModel.getError().getValue() == null) {
-                    showToast("Usuario o contraseña incorrecto.");
-                }
             }
         });
 
-        loginViewModel.getError().observe(this, error -> {
-            if (error != null) {
+        loginViewModel.getErrorMessage().observe(this, error -> {
+            if (error != null && !error.isEmpty()) {
                 showToast(error);
+            } else {
+                showToast("Usuario o contraseña incorrectos.");
             }
         });
     }
@@ -123,7 +120,7 @@ public class MainActivity extends AppCompatActivity {
         startActivity(intent);
     }
 
-    private void showToast(String message) {
-        Toast.makeText(this, message, Toast.LENGTH_SHORT).show();
+    private void showToast(String mensaje) {
+        Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();
     }
 }

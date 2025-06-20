@@ -1,10 +1,12 @@
 package com.example.applogin;
 
 import android.app.Application;
+
 import androidx.annotation.NonNull;
 import androidx.lifecycle.AndroidViewModel;
 import androidx.lifecycle.LiveData;
 import androidx.lifecycle.MutableLiveData;
+
 import com.example.applogin.base_DAO.AppDatabase;
 import com.example.applogin.base_DAO.Usuario;
 
@@ -23,7 +25,7 @@ public class LoginViewModel extends AndroidViewModel {
         return usuarioResult;
     }
 
-    public LiveData<String> getError() {
+    public LiveData<String> getErrorMessage() {
         return error;
     }
 
@@ -31,13 +33,16 @@ public class LoginViewModel extends AndroidViewModel {
         new Thread(() -> {
             try {
                 Usuario usuario = db.usuarioDao().obtenerPorNombre(username);
-                if (usuario != null && usuario.getPassword().equals(password)) {
-                    usuarioResult.postValue(usuario);
+
+                if (usuario == null) {
+                    error.postValue("Usuario no encontrado");
+                } else if (!usuario.getPassword().equals(password)) {
+                    error.postValue("Contraseña incorrecta");
                 } else {
-                    usuarioResult.postValue(null);
+                    usuarioResult.postValue(usuario);
                 }
             } catch (Exception e) {
-                error.postValue("Error al iniciar sesión: " + e.getMessage());
+                error.postValue("Error al iniciar sesión: " + e.getLocalizedMessage());
             }
         }).start();
     }

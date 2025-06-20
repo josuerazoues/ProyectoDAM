@@ -6,23 +6,33 @@ import android.util.Patterns;
 import android.widget.Button;
 import android.widget.EditText;
 import android.widget.Toast;
+
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.room.Room;
 
 import com.example.applogin.base_DAO.AppDatabase;
 import com.example.applogin.base_DAO.Usuario;
 import com.example.applogin.base_DAO.UsuarioDao;
 
+import java.util.concurrent.Executors;
+
 public class RegistrarActivity extends AppCompatActivity {
 
-    EditText etNuevoUsuario, etNuevoPassword, etConfirmarPassword, etEmail, etTelefono, rol;
-    Button btnGuardar, btnRegresar;
-    SharedPreferences prefs;
+    private EditText etNuevoUsuario, etNuevoPassword, etConfirmarPassword, etEmail, etTelefono;
+    private Button btnGuardar, btnRegresar;
+    private SharedPreferences prefs;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_registrar);
+
+        initViews();
+
+        btnGuardar.setOnClickListener(v -> guardarUsuario());
+        btnRegresar.setOnClickListener(v -> finish());
+    }
+
+    private void initViews() {
         etNuevoUsuario = findViewById(R.id.etNuevoUsuario);
         etNuevoPassword = findViewById(R.id.etNuevoPassword);
         etConfirmarPassword = findViewById(R.id.etConfirmarPassword);
@@ -30,11 +40,7 @@ public class RegistrarActivity extends AppCompatActivity {
         etTelefono = findViewById(R.id.etTelefono);
         btnGuardar = findViewById(R.id.btnGuardar);
         btnRegresar = findViewById(R.id.btnRegresar);
-
         prefs = getSharedPreferences("usuarios", MODE_PRIVATE);
-
-        btnGuardar.setOnClickListener(v -> guardarUsuario());
-        btnRegresar.setOnClickListener(v -> finish());
     }
 
     private void guardarUsuario() {
@@ -43,7 +49,7 @@ public class RegistrarActivity extends AppCompatActivity {
         String confirmar = etConfirmarPassword.getText().toString();
         String email = etEmail.getText().toString().trim();
         String telefono = etTelefono.getText().toString().trim();
-        String rol = "3";
+        int rolId = 3; // Usuario común
 
         if (usuario.length() < 3) {
             mostrar("El usuario debe tener al menos 3 caracteres.");
@@ -65,27 +71,32 @@ public class RegistrarActivity extends AppCompatActivity {
             return;
         }
 
-        AppDatabase db = AppDatabase.getInstance(getApplicationContext());
-        UsuarioDao usuarioDao = db.usuarioDao();
+        Executors.newSingleThreadExecutor().execute(() -> {
+            AppDatabase db = AppDatabase.getInstance(getApplicationContext());
+            UsuarioDao usuarioDao = db.usuarioDao();
 
-        // Verificar si el usuario ya existe
-        if (usuarioDao.obtenerPorNombre(usuario) != null) {
-            mostrar("El nombre de usuario ya existe.");
-            return;
-        }
+            if (usuarioDao.obtenerPorNombre(usuario) != null) {
+                runOnUiThread(() -> mostrar("El nombre de usuario ya existe."));
+                return;
+            }
 
-        // Insertar el nuevo usuario
-        Usuario nuevoUsuario = new Usuario(usuario, email, telefono, password, 3);
-        usuarioDao.insertar(nuevoUsuario);
+            Usuario nuevoUsuario = new Usuario(usuario, email, telefono, password, rolId);
+            usuarioDao.insertar(nuevoUsuario);
 
-        mostrar("Usuario registrado con éxito.");
+            runOnUiThread(() -> {
+                mostrar("Usuario registrado con éxito.");
+                limpiarCampos();
+            });
+        });
+    }
 
+    private void limpiarCampos() {
         etNuevoUsuario.setText("");
         etNuevoPassword.setText("");
         etConfirmarPassword.setText("");
         etEmail.setText("");
+        etTelefono.setText("");
     }
-
 
     private void mostrar(String mensaje) {
         Toast.makeText(this, mensaje, Toast.LENGTH_SHORT).show();

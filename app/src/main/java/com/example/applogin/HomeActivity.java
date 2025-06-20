@@ -3,6 +3,7 @@ package com.example.applogin;
 import android.content.Intent;
 import android.os.Bundle;
 import android.util.Log;
+import android.view.Menu;
 import android.view.MenuItem;
 import android.view.View;
 import android.widget.TextView;
@@ -18,13 +19,13 @@ import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.applogin.base_DAO.AppDatabase;
 import com.example.applogin.base_DAO.Usuario;
-import com.google.android.material.internal.NavigationMenuPresenter;
 import com.google.android.material.navigation.NavigationView;
 
 public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
 
     private DrawerLayout drawer;
     private int userId;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -40,7 +41,7 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
 
         // Configurar Navigation Drawer
         drawer = findViewById(R.id.drawer_layout);
-        NavigationView navigationView = findViewById(R.id.nav_view);
+        navigationView = findViewById(R.id.nav_view);
         navigationView.setNavigationItemSelectedListener(this);
 
         ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
@@ -68,22 +69,23 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
             intent.putExtra("ID_USUARIO", userId);
             startActivity(intent);
         } else if (id == R.id.nav_user_management) {
-                new Thread(() -> {
-                    Usuario usuario = AppDatabase.getInstance(getApplicationContext())
-                            .usuarioDao()
-                            .obtenerPorId(userId);
+            new Thread(() -> {
+                Usuario usuario = AppDatabase.getInstance(getApplicationContext())
+                        .usuarioDao()
+                        .obtenerPorId(userId);
 
+                if (usuario != null) {
                     runOnUiThread(() -> {
-                        if (usuario != null && usuario.getId_rol() == 1) { // 1 = Administrador
+                        if (usuario.getId_rol() == 1) { // 1 = Administrador
                             Intent intent = new Intent(this, UserManagementActivity.class);
                             startActivity(intent);
                         } else {
                             Toast.makeText(this, "Acceso no autorizado", Toast.LENGTH_SHORT).show();
                         }
                     });
-                }).start();
+                }
+            }).start();
         } else if (id == R.id.nav_logout) {
-            // Forma más segura de cerrar sesión
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
@@ -101,23 +103,27 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
                         .usuarioDao()
                         .obtenerPorId(idUsuario);
 
-                runOnUiThread(() -> {
-                    NavigationView navView = findViewById(R.id.nav_view);
+                if (usuario != null) {
+                    runOnUiThread(() -> {
+                        if (navigationView != null && navigationView.getHeaderCount() > 0) {
+                            View headerView = navigationView.getHeaderView(0);
+                            TextView tvNombre = headerView.findViewById(R.id.nombreUsuario);
+                            TextView tvEmail = headerView.findViewById(R.id.tvEmailUsuario);
 
-                    // Verifica que el header exista
-                    if (navView != null && navView.getHeaderCount() > 0) {
-                        View headerView = navView.getHeaderView(0);
+                            if (tvNombre != null && tvEmail != null) {
+                                tvNombre.setText(usuario.getNombre());
+                                tvEmail.setText(usuario.getCorreo());
+                            }
 
-                        // Verifica que los TextView existan
-                        TextView tvNombre = headerView.findViewById(R.id.nombreUsuario);
-                        TextView tvEmail = headerView.findViewById(R.id.tvEmailUsuario);
-
-                        if (tvNombre != null && tvEmail != null && usuario != null) {
-                            tvNombre.setText(usuario.getNombre());
-                            tvEmail.setText(usuario.getCorreo());
+                            // Ocultar menú si no es admin
+                            Menu menu = navigationView.getMenu();
+                            MenuItem adminItem = menu.findItem(R.id.nav_user_management);
+                            if (adminItem != null) {
+                                adminItem.setVisible(usuario.getId_rol() == 1);
+                            }
                         }
-                    }
-                });
+                    });
+                }
             } catch (Exception e) {
                 Log.e("HomeActivity", "Error cargando usuario", e);
             }
