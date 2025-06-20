@@ -1,8 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
-<LinearLayout xmlns:android="http://schemas.android.com/apk/res/android"
+<LinearLayout
+    xmlns:android="http://schemas.android.com/apk/res/android"
     android:layout_width="match_parent"
     android:layout_height="160dp"
-    android:background="@color/purple_700"
+    android:background="#003B73"
     android:gravity="bottom"
     android:orientation="vertical"
     android:padding="16dp">
@@ -11,8 +12,8 @@
         android:id="@+id/nav_header_title"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
-        android:text="App Login"
-        android:textColor="@color/white"
+        android:text="Taller Mecánico"
+        android:textColor="#FFFFFF"
         android:textSize="20sp"
         android:textStyle="bold" />
 
@@ -21,15 +22,24 @@
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         android:text="Bienvenido"
-        android:textColor="@android:color/white" />
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginTop="2dp" />
 
     <TextView
         android:id="@+id/nombreUsuario"
         android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+        android:layout_height="wrap_content"
+        android:text="Usuario"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp"
+        android:layout_marginTop="8dp" />
 
     <TextView
         android:id="@+id/tvEmailUsuario"
-    android:layout_width="wrap_content"
-    android:layout_height="wrap_content" />
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="correo@ejemplo.com"
+        android:textColor="#FFFFFF"
+        android:textSize="14sp" />
 </LinearLayout>

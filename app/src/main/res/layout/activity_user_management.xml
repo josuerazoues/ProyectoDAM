@@ -12,7 +12,7 @@
         android:id="@+id/appTitle"
         android:layout_width="0dp"
         android:layout_height="60dp"
-        android:background="#4B0082"
+        android:background="@color/azul_mecanico"
         android:text="NOMBRE APP"
         android:textColor="@android:color/white"
         android:textSize="20sp"
