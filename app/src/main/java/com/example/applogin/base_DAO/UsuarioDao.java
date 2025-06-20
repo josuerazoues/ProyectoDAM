@@ -1,4 +1,6 @@
-package com.example.applogin;
+package com.example.applogin.base_DAO;
+
+import android.database.sqlite.SQLiteDatabase;
 
 import androidx.room.Dao;
 import androidx.room.Delete;
@@ -10,9 +12,9 @@ import java.util.List;
 
 @Dao
 public interface UsuarioDao {
-
     @Insert
     void insertar(Usuario usuario);
+
 
     @Query("SELECT * FROM usuarios")
     List<Usuario> obtenerTodos();
@@ -28,5 +30,17 @@ public interface UsuarioDao {
 
     @Delete
     void eliminar(Usuario usuario);
+
+    @Query("SELECT * FROM usuarios WHERE nombre = :nombre LIMIT 1")
+    Usuario obtenerPorNombre(String nombre);
+
+    @Query("SELECT * FROM usuarios WHERE correo = :correo")
+    Usuario obtenerPorCorreo(String correo);
+
+    @Query("SELECT * FROM usuarios WHERE correo = :correo AND password = :password")
+    Usuario login(String correo, String password);
+
+    @Query("SELECT * FROM usuarios WHERE nombre = :nombre LIMIT 1")
+    Usuario buscarPorNombre(String nombre);
 }
 

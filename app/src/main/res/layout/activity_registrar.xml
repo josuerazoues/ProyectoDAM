@@ -99,6 +99,15 @@
                 android:inputType="textEmailAddress"
                 android:backgroundTint="#6200EE" />
 
+            <EditText
+                android:id="@+id/etTelefono"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:hint="Teléfono"
+                android:inputType="phone"
+                android:backgroundTint="#6200EE"
+                android:layout_marginTop="16dp"/>
+
             <Button
                 android:id="@+id/btnGuardar"
                 android:layout_width="match_parent"
