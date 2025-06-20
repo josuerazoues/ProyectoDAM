@@ -1,46 +1,63 @@
 package com.example.applogin;
 
+import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.widget.TableLayout;
 import android.widget.TableRow;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
+import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
+import androidx.core.view.GravityCompat;
+import androidx.drawerlayout.widget.DrawerLayout;
+
 import com.example.applogin.base_DAO.AppDatabase;
 import com.example.applogin.base_DAO.Usuario;
+import com.google.android.material.navigation.NavigationView;
+
 import java.util.List;
 
-public class UserManagementActivity extends AppCompatActivity {
+public class UserManagementActivity extends MenuLateral{
 
     private TableLayout userTable;
     private AppDatabase db;
+    private int userId;
+    private DrawerLayout drawer;
+
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_user_management);
 
-        // Inicializar vistas
+        // Configurar Toolbar
+        Toolbar toolbar = findViewById(R.id.toolbar);
+        setSupportActionBar(toolbar);
+
+        // Configurar Drawer
+        configurarDrawer(R.id.toolbar, R.id.drawer_layout, R.id.nav_view);
+
+
+        // Configurar título si es necesario
+        if (getSupportActionBar() != null) {
+            getSupportActionBar().setTitle("Gestión de Usuarios");
+        }
+
+        // Inicializar vista de tabla
         userTable = findViewById(R.id.userTable);
         if (userTable == null) {
             throw new IllegalStateException("TableLayout con ID 'userTable' no encontrado en el layout");
         }
 
-        TextView appTitle = findViewById(R.id.appTitle);
-        appTitle.setText("Gestión de Usuarios");
-
-        if (getSupportActionBar() != null) {
-            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-            getSupportActionBar().setTitle("Gestión de Usuarios");
-        }
-
-        // Obtener instancia de la base de datos
+        // Obtener instancia de Room
         db = AppDatabase.getInstance(getApplicationContext());
 
-        // Cargar usuarios
+        // Cargar datos de usuarios
         cargarUsuarios();
     }
 

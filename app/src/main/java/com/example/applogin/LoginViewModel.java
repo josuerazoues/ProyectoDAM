@@ -46,4 +46,8 @@ public class LoginViewModel extends AndroidViewModel {
             }
         }).start();
     }
+
+    public MutableLiveData<String> getError() {
+        return error;
+    }
 }
