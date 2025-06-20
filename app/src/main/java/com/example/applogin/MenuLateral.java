@@ -55,10 +55,16 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
 
         if (id == R.id.nav_home) {
             // Ya estamos en home
+            Intent intent = new Intent(this, HomeActivity.class);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+            startActivity(intent);
+            finish(); // Cierra la actual
         } else if (id == R.id.nav_perfil) {
             Intent intent = new Intent(this, PerfilActivity.class);
             intent.putExtra("ID_USUARIO", userId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
+            finish(); // Cierra la actual
         } else if (id == R.id.nav_user_management) {
             new Thread(() -> {
                 Usuario usuario = AppDatabase.getInstance(getApplicationContext())
@@ -69,7 +75,9 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
                     runOnUiThread(() -> {
                         if (usuario.getId_rol() == 1) { // 1 = Administrador
                             Intent intent = new Intent(this, UserManagementActivity.class);
+                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
+                            finish(); // Cierra la actual
                         } else {
                             Toast.makeText(this, "Acceso no autorizado", Toast.LENGTH_SHORT).show();
                         }
@@ -80,7 +88,7 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
-            finish();
+            finish(); // Cierra la sesión actual
         }
 
         drawer.closeDrawer(GravityCompat.START);
