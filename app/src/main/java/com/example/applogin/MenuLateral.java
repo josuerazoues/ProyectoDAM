@@ -8,6 +8,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.appcompat.app.ActionBarDrawerToggle;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.app.AppCompatDelegate;
 import androidx.appcompat.widget.Toolbar;
 import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
@@ -26,7 +27,8 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-
+        AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
+        setContentView(R.layout.activity_main);
         userId = getIntent().getIntExtra("ID_USUARIO", -1); // O ajusta según cómo pasas el ID
     }
 
@@ -89,6 +91,16 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish(); // Cierra la sesión actual
+        }else if (id == R.id.nav_toggle_theme) {
+            int nightMode = AppCompatDelegate.getDefaultNightMode();
+            if (nightMode == AppCompatDelegate.MODE_NIGHT_YES) {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_NO);
+            } else {
+                AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.MODE_NIGHT_YES);
+            }
+
+            // Reinicia la actividad para aplicar el cambio de tema
+            recreate();
         }
 
         drawer.closeDrawer(GravityCompat.START);
