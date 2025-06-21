@@ -100,7 +100,7 @@ public class RegistrarVehiculo extends MenuLateral {
 
             userId = getIntent().getIntExtra("ID_USUARIO", -1);
 
-
+            //ingresando datos a la base de datos
             Vehiculo nuevoVehiculo = new Vehiculo(userId, marca, modelo, tipo, anio, color);
 
             new Thread(() -> {
