@@ -32,7 +32,7 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
         userId = getIntent().getIntExtra("ID_USUARIO", -1);
 
-        configurarDrawer(R.id.toolbar, R.id.drawer_layout, R.id.navigation_view); // IDs corregidos
+        configurarDrawer(R.id.toolbar, R.id.drawer_layout, R.id.navigation_view);
     }
 
     public void configurarDrawer(int idToolbar, int idDrawerLayout, int idNavView) {
@@ -91,19 +91,18 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
                         .usuarioDao()
                         .obtenerPorId(userId);
 
-                if (usuario != null) {
-                    runOnUiThread(() -> {
-                        if (usuario.getId_rol() == 1) {
-                            Intent intent = new Intent(this, UserManagementActivity.class);
-                            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-                            startActivity(intent);
-                            finish();
-                        } else {
-                            Toast.makeText(this, "Acceso no autorizado", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
+                runOnUiThread(() -> {
+                    if (usuario != null && usuario.getId_rol() == 1) {
+                        Intent intent = new Intent(this, UserManagementActivity.class);
+                        intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
+                        startActivity(intent);
+                        finish();
+                    } else {
+                        Toast.makeText(this, "Acceso no autorizado", Toast.LENGTH_SHORT).show();
+                    }
+                });
             }).start();
+
             return true;
 
         } else if (id == R.id.citas) {
@@ -134,18 +133,23 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
-        }
-        else if (id == R.id.ver_vehiculos) {
+
+        } else if (id == R.id.ver_vehiculos) {
             Intent intent = new Intent(this, ListaVehiculosActivity.class);
             intent.putExtra("ID_USUARIO", userId);
+            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         }
+
+        // Cierra el drawer en todos los casos si no es null
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
             Log.e("MenuLateral", "Drawer es null en onNavigationItemSelected, no se puede cerrar.");
         }
+
         return true;
     }
+
 }

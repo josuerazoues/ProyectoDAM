@@ -2,6 +2,7 @@
 <manifest xmlns:android="http://schemas.android.com/apk/res/android"
     xmlns:tools="http://schemas.android.com/tools">
 
+    <!-- Permisos -->
     <uses-permission android:name="android.permission.READ_EXTERNAL_STORAGE" />
     <uses-permission android:name="android.permission.READ_MEDIA_IMAGES" />
 
@@ -15,43 +16,60 @@
         android:supportsRtl="true"
         android:theme="@style/Theme.AppLogin"
         tools:targetApi="31">
-        <activity
-            android:name=".CitaTaller.NuevaCita"
-            android:exported="false" />
-        <activity
-            android:name=".CitaTaller.CitasTaller"
-            android:exported="false" />
 
-        <activity android:name=".ListaVehiculosActivity"
-            android:exported="false" />
-
-        <activity
-            android:name=".UserManagementActivity"
-            android:parentActivityName=".HomeActivity">
-            <meta-data
-                android:name="android.support.PARENT_ACTIVITY"
-                android:value=".HomeActivity" />
-        </activity>
-        <activity
-            android:name=".PerfilActivity"
-            android:exported="false" />
-        <activity
-            android:name=".RegistrarActivity"
-            android:exported="false" />
-        <activity
-            android:name=".HomeActivity"
-            android:exported="false" />
+        <!-- Pantalla principal (launcher) -->
         <activity
             android:name=".MainActivity"
             android:exported="true">
             <intent-filter>
                 <action android:name="android.intent.action.MAIN" />
-
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
 
-        <activity android:name=".RegistrarVehiculo" />
+        <!-- Home principal -->
+        <activity
+            android:name=".HomeActivity"
+            android:exported="true" />
+
+        <!-- Perfil -->
+        <activity
+            android:name=".PerfilActivity"
+            android:exported="true" />
+
+        <!-- Registro de usuarios -->
+        <activity
+            android:name=".RegistrarActivity"
+            android:exported="true" />
+
+        <!-- Gestión de usuarios -->
+        <activity
+            android:name=".UserManagementActivity"
+            android:exported="true"
+            android:parentActivityName=".HomeActivity">
+            <meta-data
+                android:name="android.support.PARENT_ACTIVITY"
+                android:value=".HomeActivity" />
+        </activity>
+
+        <!-- Registro de vehículo -->
+        <activity
+            android:name=".RegistrarVehiculo"
+            android:exported="true" />
+
+        <!-- Lista de vehículos -->
+        <activity
+            android:name=".ListaVehiculosActivity"
+            android:exported="true" />
+
+        <!-- Citas del taller -->
+        <activity
+            android:name=".CitaTaller.CitasTaller"
+            android:exported="true" />
+
+        <activity
+            android:name=".CitaTaller.NuevaCitaActivity"
+            android:exported="true" />
 
     </application>
 

@@ -21,7 +21,7 @@ import com.example.applogin.base_DAO.AppDatabase;
 import com.example.applogin.base_DAO.Usuario;
 import com.google.android.material.navigation.NavigationView;
 
-public class HomeActivity extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class HomeActivity extends MenuLateral {
 
     private DrawerLayout drawer;
     private int userId;
@@ -56,44 +56,6 @@ public class HomeActivity extends AppCompatActivity implements NavigationView.On
         if (userId != -1) {
             cargarUsuario(userId);
         }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-        if (id == R.id.nav_home) {
-            // Ya estamos en home
-        } else if (id == R.id.nav_perfil) {
-            Intent intent = new Intent(this, PerfilActivity.class);
-            intent.putExtra("ID_USUARIO", userId);
-            startActivity(intent);
-        } else if (id == R.id.nav_user_management) {
-            new Thread(() -> {
-                Usuario usuario = AppDatabase.getInstance(getApplicationContext())
-                        .usuarioDao()
-                        .obtenerPorId(userId);
-
-                if (usuario != null) {
-                    runOnUiThread(() -> {
-                        if (usuario.getId_rol() == 1) { // 1 = Administrador
-                            Intent intent = new Intent(this, UserManagementActivity.class);
-                            startActivity(intent);
-                        } else {
-                            Toast.makeText(this, "Acceso no autorizado", Toast.LENGTH_SHORT).show();
-                        }
-                    });
-                }
-            }).start();
-        } else if (id == R.id.nav_logout) {
-            Intent intent = new Intent(this, MainActivity.class);
-            intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
-            startActivity(intent);
-            finish();
-        }
-
-        drawer.closeDrawer(GravityCompat.START);
-        return true;
     }
 
     private void cargarUsuario(int idUsuario) {
