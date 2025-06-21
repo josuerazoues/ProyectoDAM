@@ -14,12 +14,14 @@ import androidx.core.view.GravityCompat;
 import androidx.drawerlayout.widget.DrawerLayout;
 
 import com.example.applogin.base_DAO.AppDatabase;
+import com.example.applogin.base_DAO.Usuario;
 import com.example.applogin.base_DAO.Vehiculo;
+import com.example.applogin.base_DAO.UsuarioDao;
 import com.google.android.material.appbar.MaterialToolbar;
 import com.google.android.material.button.MaterialButton;
 import com.google.android.material.navigation.NavigationView;
 
-public class RegistrarVehiculo extends AppCompatActivity implements NavigationView.OnNavigationItemSelectedListener {
+public class RegistrarVehiculo extends MenuLateral {
 
     private DrawerLayout drawerLayout;
     private MaterialToolbar toolbar;
@@ -28,6 +30,9 @@ public class RegistrarVehiculo extends AppCompatActivity implements NavigationVi
     private Spinner spinnerTipo, spinnerMarca, spinnerModelo;
     private EditText editTextAnio, editTextColor;
     private MaterialButton btnGuardar;
+
+    private UsuarioDao usuarioDAO;
+    private Usuario usuario;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -92,9 +97,11 @@ public class RegistrarVehiculo extends AppCompatActivity implements NavigationVi
             }
 
             int anio = Integer.parseInt(anioTexto);
-            int idUsuario = 1;
 
-            Vehiculo nuevoVehiculo = new Vehiculo(idUsuario, marca, modelo, tipo, anio, color);
+            userId = getIntent().getIntExtra("ID_USUARIO", -1);
+
+
+            Vehiculo nuevoVehiculo = new Vehiculo(userId, marca, modelo, tipo, anio, color);
 
             new Thread(() -> {
                 AppDatabase db = AppDatabase.getInstance(getApplicationContext());
@@ -103,7 +110,6 @@ public class RegistrarVehiculo extends AppCompatActivity implements NavigationVi
                 runOnUiThread(() -> Toast.makeText(this, "Vehículo guardado en la base de datos", Toast.LENGTH_SHORT).show());
             }).start();
         });
-
     }
 
     private void cargarModelosSegunMarca(int posicionMarca) {
@@ -130,41 +136,6 @@ public class RegistrarVehiculo extends AppCompatActivity implements NavigationVi
             spinnerModelo.setAdapter(adapterModelo);
         } else {
             spinnerModelo.setAdapter(null);
-        }
-    }
-
-    @Override
-    public boolean onNavigationItemSelected(@NonNull MenuItem item) {
-        int id = item.getItemId();
-
-
-        if (id == R.id.nav_perfil) {
-            Toast.makeText(this, "Perfil seleccionado", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_user_management) {
-            Toast.makeText(this, "Gestión de Usuarios seleccionado", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.registro_vehiculo) {
-            Toast.makeText(this, "Registros de vehículos seleccionado", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.citas) {
-            Toast.makeText(this, "Citas seleccionado", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.Historial) {
-            Toast.makeText(this, "Historial seleccionado", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_toggle_theme) {
-            Toast.makeText(this, "Cambiar tema seleccionado", Toast.LENGTH_SHORT).show();
-        } else if (id == R.id.nav_logout) {
-            Toast.makeText(this, "Cerrar sesión seleccionado", Toast.LENGTH_SHORT).show();
-        }
-
-
-        drawerLayout.closeDrawer(GravityCompat.START);
-        return true;
-    }
-
-    @Override
-    public void onBackPressed() {
-        if (drawerLayout.isDrawerOpen(GravityCompat.START)){
-            drawerLayout.closeDrawer(GravityCompat.START);
-        } else {
-            super.onBackPressed();
         }
     }
 }

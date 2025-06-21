@@ -118,7 +118,7 @@ public class MainActivity extends AppCompatActivity {
 
     private void handleSuccessfulLogin(Usuario usuario) {
         showToast("Bienvenido " + usuario.getNombre());
-        Intent intent = new Intent(this, HomeActivity.class);
+        Intent intent = new Intent(this, PerfilActivity.class);
         intent.putExtra("ID_USUARIO", usuario.getId_usuario());
         startActivity(intent);
     }
