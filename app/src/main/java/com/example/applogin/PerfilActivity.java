@@ -1,10 +1,8 @@
 package com.example.applogin;
 
 import android.Manifest;
-import android.app.Activity;
 import android.content.Intent;
 import android.content.pm.PackageManager;
-import android.graphics.Bitmap;
 import android.net.Uri;
 import android.os.Build;
 import android.os.Bundle;
@@ -25,8 +23,6 @@ import com.google.android.material.textfield.TextInputEditText;
 
 import org.jetbrains.annotations.Nullable;
 
-import java.io.IOException;
-
 public class PerfilActivity extends MenuLateral {
 
     private static final int PICK_IMAGE_REQUEST = 1;
@@ -37,19 +33,19 @@ public class PerfilActivity extends MenuLateral {
     private Button btnEdit, btnSave;
     private AppDatabase db;
     private Usuario usuarioActual;
-    private int userId = 1;
+    private int userId = -1;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_perfil);
 
-        // Configurar toolbar y drawer
+        userId = getIntent().getIntExtra("ID_USUARIO", -1);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         configurarDrawer(R.id.toolbar, R.id.drawer_layout, R.id.nav_view);
 
-        // Enlazar vistas
         profileImage = findViewById(R.id.profile_image);
         etName = findViewById(R.id.et_name);
         etEmail = findViewById(R.id.et_email);
@@ -58,7 +54,6 @@ public class PerfilActivity extends MenuLateral {
         btnEdit = findViewById(R.id.btn_edit);
         btnSave = findViewById(R.id.btn_save);
 
-        // Restaurar imagen seleccionada al recrear vista
         if (savedInstanceState != null) {
             String uriGuardada = savedInstanceState.getString("img_uri");
             if (uriGuardada != null) {
@@ -67,16 +62,12 @@ public class PerfilActivity extends MenuLateral {
             }
         }
 
-        // Permitir selección de imagen al hacer clic en la imagen
         profileImage.setOnClickListener(view -> verificarYPedirPermisos());
 
-        // Botón para editar
         btnEdit.setOnClickListener(v -> habilitarEdicion(true));
 
-        // Botón para guardar cambios
         btnSave.setOnClickListener(v -> guardarCambios());
 
-        // Inicializar DB y cargar datos
         db = AppDatabase.getInstance(getApplicationContext());
         cargarDatosUsuario();
     }
@@ -91,6 +82,9 @@ public class PerfilActivity extends MenuLateral {
                     etPhone.setText(usuarioActual.getTelefono());
                     etPassword.setText(usuarioActual.getPassword());
                 });
+            } else {
+                runOnUiThread(() ->
+                        Toast.makeText(this, "No se encontró el usuario", Toast.LENGTH_SHORT).show());
             }
         }).start();
     }

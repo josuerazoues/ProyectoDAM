@@ -5,4 +5,7 @@
     <color name="purple_700">#6200EE</color>
     <color name="azul_mecanico">#003B73</color>
     <color name="purple_500">#6200EE</color>
+    <color name="blanco_fondo">#F2F2F2</color>
+    <color name="texto_oscuro">#212121</color>
+
 </resources>

@@ -21,6 +21,10 @@
         <activity
             android:name=".CitaTaller.CitasTaller"
             android:exported="false" />
+
+        <activity android:name=".ListaVehiculosActivity"
+            android:exported="false" />
+
         <activity
             android:name=".UserManagementActivity"
             android:parentActivityName=".HomeActivity">

@@ -7,6 +7,9 @@
         <item android:id="@+id/registro_vehiculo" android:title="Registros de vehículos" />
         <item android:id="@+id/citas" android:title="Citas" />
         <item android:id="@+id/Historial" android:title="Historial" />
+        <item android:id="@+id/ver_vehiculos"
+            android:title="Mis Vehículos"/>
+
     </group>
 
     <item android:id="@+id/nav_toggle_theme" android:title="Cambiar tema" />

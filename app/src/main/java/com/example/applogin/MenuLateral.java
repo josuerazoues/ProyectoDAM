@@ -2,7 +2,7 @@ package com.example.applogin;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.util.Log; // Import Log for debugging
+import android.util.Log;
 import android.view.MenuItem;
 import android.widget.Toast;
 
@@ -30,42 +30,29 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         AppCompatDelegate.setDefaultNightMode(AppCompatDelegate.getDefaultNightMode());
-        //setContentView(R.layout.activity_main); // Make sure this layout has the drawer, toolbar, and nav view
         userId = getIntent().getIntExtra("ID_USUARIO", -1);
 
-        // *** Call configurarDrawer here with the correct IDs ***
-        // Replace R.id.toolbar, R.id.drawer_layout, and R.id.nav_view
-        // with the actual IDs from your R.layout.activity_main XML file.
-        configurarDrawer(R.id.toolbar, R.id.drawer_layout, R.id.nav_view);
+        configurarDrawer(R.id.toolbar, R.id.drawer_layout, R.id.navigation_view); // IDs corregidos
     }
 
     public void configurarDrawer(int idToolbar, int idDrawerLayout, int idNavView) {
         toolbar = findViewById(idToolbar);
         if (toolbar == null) {
-            Log.e("MenuLateral", "Toolbar not found with ID: " + idToolbar);
-            // You might want to throw an exception or handle this more gracefully
-            // depending on whether the toolbar is critical.
+            Log.e("MenuLateral", "Toolbar no encontrado con ID: " + idToolbar);
         } else {
             setSupportActionBar(toolbar);
         }
 
-
         drawer = findViewById(idDrawerLayout);
         if (drawer == null) {
-            Log.e("MenuLateral", "DrawerLayout not found with ID: " + idDrawerLayout);
-            // This is critical, if the drawer is null, the app will crash later.
-            // Consider throwing an IllegalStateException or handling it.
-            // For now, onNavigationItemSelected will still crash if it's null.
+            Log.e("MenuLateral", "DrawerLayout no encontrado con ID: " + idDrawerLayout);
         }
 
         navigationView = findViewById(idNavView);
         if (navigationView == null) {
-            Log.e("MenuLateral", "NavigationView not found with ID: " + idNavView);
+            Log.e("MenuLateral", "NavigationView no encontrado con ID: " + idNavView);
         }
 
-
-        // It's good practice to check if these views are null before using them,
-        // especially the drawer, to prevent crashes if IDs are incorrect or views are missing.
         if (drawer != null && navigationView != null && toolbar != null) {
             ActionBarDrawerToggle toggle = new ActionBarDrawerToggle(
                     this, drawer, toolbar,
@@ -77,29 +64,27 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
 
             navigationView.setNavigationItemSelectedListener(this);
         } else {
-            Log.e("MenuLateral", "One or more views (Toolbar, Drawer, NavigationView) are null. Drawer setup incomplete.");
-            // You might want to show a Toast or disable navigation features if setup fails.
+            Log.e("MenuLateral", "Toolbar, Drawer o NavigationView son null. Drawer no configurado.");
         }
     }
-
 
     @Override
     public boolean onNavigationItemSelected(@NonNull MenuItem item) {
         int id = item.getItemId();
 
-        // ... (your existing if-else if logic for item clicks) ...
-        // Example:
         if (id == R.id.nav_home) {
             Intent intent = new Intent(this, HomeActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+
         } else if (id == R.id.nav_perfil) {
             Intent intent = new Intent(this, PerfilActivity.class);
             intent.putExtra("ID_USUARIO", userId);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+
         } else if (id == R.id.nav_user_management) {
             new Thread(() -> {
                 Usuario usuario = AppDatabase.getInstance(getApplicationContext())
@@ -108,35 +93,32 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
 
                 if (usuario != null) {
                     runOnUiThread(() -> {
-                        if (usuario.getId_rol() == 1) { // Example: Admin role
+                        if (usuario.getId_rol() == 1) {
                             Intent intent = new Intent(this, UserManagementActivity.class);
                             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
                             startActivity(intent);
                             finish();
                         } else {
                             Toast.makeText(this, "Acceso no autorizado", Toast.LENGTH_SHORT).show();
-                            // Keep the drawer open if access is not authorized for user management
-                            // and the user is already on a page that needs the drawer.
-                            // However, if finish() was called above, this won't matter much.
-                            // Consider the flow carefully.
-
                         }
                     });
                 }
             }).start();
-
             return true;
+
         } else if (id == R.id.citas) {
             Intent intent = new Intent(this, CitasTaller.class);
             intent.putExtra("ID_USUARIO", userId);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+
         } else if (id == R.id.nav_logout) {
             Intent intent = new Intent(this, MainActivity.class);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
+
         } else if (id == R.id.nav_toggle_theme) {
             int nightMode = AppCompatDelegate.getDefaultNightMode();
             AppCompatDelegate.setDefaultNightMode(
@@ -145,21 +127,24 @@ public class MenuLateral extends AppCompatActivity implements NavigationView.OnN
                             AppCompatDelegate.MODE_NIGHT_YES
             );
             recreate();
-            // No need to close drawer here if recreate() handles the UI refresh
+
         } else if (id == R.id.registro_vehiculo) {
             Intent intent = new Intent(this, RegistrarVehiculo.class);
+            intent.putExtra("ID_USUARIO", userId);
             intent.addFlags(Intent.FLAG_ACTIVITY_CLEAR_TOP | Intent.FLAG_ACTIVITY_NEW_TASK);
             startActivity(intent);
             finish();
         }
-
-
-        // Only close the drawer if it's not null and an actual navigation happened
-        // or if you always want to close it after any item click.
+        else if (id == R.id.ver_vehiculos) {
+            Intent intent = new Intent(this, ListaVehiculosActivity.class);
+            intent.putExtra("ID_USUARIO", userId);
+            startActivity(intent);
+            finish();
+        }
         if (drawer != null) {
             drawer.closeDrawer(GravityCompat.START);
         } else {
-            Log.e("MenuLateral", "Drawer is null in onNavigationItemSelected, cannot close.");
+            Log.e("MenuLateral", "Drawer es null en onNavigationItemSelected, no se puede cerrar.");
         }
         return true;
     }
